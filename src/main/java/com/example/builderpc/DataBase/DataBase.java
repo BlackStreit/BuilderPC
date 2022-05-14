@@ -7,8 +7,8 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 
 public class DataBase {
-    public static Connection connection;
-    public static Statement statement;
+    private static Connection connection;
+    private static Statement statement;
     public static void createDataBase() {
         try {
             Class.forName("org.sqlite.JDBC"); //Проверяем наличие JDBC драйвера для работы с БД
@@ -56,7 +56,7 @@ public class DataBase {
                 cpu.setTitle(resultSet.getString("title"));
                 cpu.setArchetype(resultSet.getString("archetype"));
                 cpu.setFrequency(resultSet.getFloat("frequency"));
-                cpu.setManufacture(resultSet.getString("manufacture"));
+                cpu.setManufacture(resultSet.getString("manufacturer"));
                 cpu.setPower(resultSet.getInt("power"));
                 cpu.setSocket(resultSet.getString("socket"));
                 cpus.add(cpu);
@@ -67,5 +67,35 @@ public class DataBase {
             e.printStackTrace();
         }
         return cpus;
+    }
+    public static void addCPU(CPU cpu){
+        var req = String.format("""
+                INSERT INTO CPU(frequency, power, socket, archetype, title, manufacturer) 
+                VALUES (%s, %s, '%s', '%s', '%s', '%s');
+                """, cpu.getFrequency(), cpu.getPower(), cpu.getSocket(), cpu.getArchetype(), cpu.getTitle(), cpu.getManufacture());
+        try {
+            statement.executeUpdate(req);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void deleteCPU(int id){
+        var req =String.format("DELETE FROM cpu where id = %s", id);
+        try {
+            statement.executeUpdate(req);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void editCPU(CPU cpu){
+        var req = String.format("""
+                UPDATE cpu SET title = '%s', frequency = %s, power = %s, socket = '%s', archetype = '%s', manufacturer = '%s'
+                WHERE id = %s;
+                """, cpu.getTitle(), cpu.getFrequency(), cpu.getPower(), cpu.getSocket(), cpu.getArchetype(), cpu.getManufacture(), cpu.getId());
+        try {
+            statement.executeUpdate(req);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

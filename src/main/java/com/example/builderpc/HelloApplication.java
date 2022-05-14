@@ -1,5 +1,6 @@
 package com.example.builderpc;
 
+import com.example.builderpc.Classes.CPU;
 import com.example.builderpc.DataBase.DataBase;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

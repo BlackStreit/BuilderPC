@@ -1,14 +1,21 @@
 package com.example.builderpc.Controllers;
 
+import com.example.builderpc.Classes.CPU;
+import com.example.builderpc.DataBase.DataBase;
+import com.example.builderpc.HelloApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -25,7 +32,6 @@ public class CPUAddController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         initCombos();
     }
     void initCombos(){
@@ -88,10 +94,35 @@ public class CPUAddController implements Initializable {
     }
 
     public void btnAddClick(ActionEvent actionEvent) {
-
+        var cpu = new CPU();
+        try {
+            cpu.setArchetype(cmbArchetype.getValue());
+            cpu.setFrequency(cmbFrequency.getValue());
+            cpu.setPower(cmbPower.getValue());
+            cpu.setManufacture(cmbManufacture.getValue());
+            cpu.setSocket(cmbSocket.getValue());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+            cpu.setTitle(txtTitle.getText());
+        }
+        catch (Exception ex){
+            response.setText(ex.getMessage());
+            return;
+        }
+        DataBase.addCPU(cpu);
     }
 
-    public void btnCloseClick(ActionEvent actionEvent) {
+    public void btnCloseClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnAdd.getScene().getWindow();
+        DataBase.createDataBase();
+        DataBase.createTable();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        totalStage.setTitle("Главная страница");
+        totalStage.setScene(scene);
+        totalStage.show();
     }
 
     public void cmbManufactureSwitch(ActionEvent actionEvent) {

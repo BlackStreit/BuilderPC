@@ -45,7 +45,7 @@ public class CPU {
 
     public void setFrequency(float frequency) throws Exception {
         if(frequency <= 0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение частоты");
         }
         this.frequency = frequency;
     }
@@ -56,7 +56,7 @@ public class CPU {
 
     public void setPower(int power) throws Exception {
         if(power<=0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение энергопотребления");
         }
         this.power = power;
     }
@@ -67,7 +67,7 @@ public class CPU {
 
     public void setSocket(String socket) throws Exception {
         if(socket.length() == 0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение сокета");
         }
         this.socket = socket;
     }
@@ -78,7 +78,7 @@ public class CPU {
 
     public void setArchetype(String archetype) throws Exception {
         if(archetype.length() == 0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение архитектуры");
         }
         this.archetype = archetype;
     }
@@ -89,7 +89,7 @@ public class CPU {
 
     public void setTitle(String title) throws Exception {
         if(title.length() == 0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение названия");
         }
         this.title = title;
     }
@@ -100,7 +100,7 @@ public class CPU {
 
     public void setManufacture(String manufacture) throws Exception {
         if(manufacture.length() == 0){
-            throw new Exception("Вы ввели некорректное значение");
+            throw new Exception("Вы ввели некорректное значение производителя");
         }
         this.manufacture = manufacture;
     }
