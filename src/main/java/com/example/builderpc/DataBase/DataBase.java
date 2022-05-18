@@ -9,6 +9,17 @@ import java.sql.*;
 public class DataBase {
     private static Connection connection;
     private static Statement statement;
+
+    public static void deleteTable(){
+        String sql = """
+               DROP TABLE VideoCard;
+                """;
+        try {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public static void createDataBase() {
         try {
             Class.forName("org.sqlite.JDBC"); //Проверяем наличие JDBC драйвера для работы с БД
@@ -24,6 +35,7 @@ public class DataBase {
         }
     }
     public static void createTable(){
+        //deleteTable();
         String sql = """
                 CREATE TABLE IF NOT EXISTS CPU
                 ( id integer PRIMARY KEY AUTOINCREMENT,
@@ -40,12 +52,12 @@ public class DataBase {
             e.printStackTrace();
         }
         sql = """
-                CREATE TABLE VideoCard (
+                CREATE TABLE IF NOT EXISTS VideoCard (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 GCPU text,
                 VolumeMemory integer,
                 TypeMemory text,
-                FrequencyMemory float,
+                FrequencyMemory integer,
                 Power integer,
                 title text,
                 manufacturer text);
@@ -56,7 +68,7 @@ public class DataBase {
             e.printStackTrace();
         }
         sql = """
-                CREATE TABLE PowerBlock (
+                CREATE TABLE IF NOT EXISTS PowerBlock (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 power integer,
                 title text,
@@ -69,7 +81,7 @@ public class DataBase {
         }
 
         sql = """
-                CREATE TABLE Storage (
+                CREATE TABLE IF NOT EXISTS Storage (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 volume integer,
                 type text,
@@ -84,7 +96,7 @@ public class DataBase {
             e.printStackTrace();
         }
         sql = """
-                CREATE TABLE RAM (
+                CREATE TABLE IF NOT EXISTS RAM (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 typeMemory text,
                 frequency float,
@@ -99,7 +111,7 @@ public class DataBase {
         }
 
         sql = """
-                CREATE TABLE MotherBoard (
+                CREATE TABLE IF NOT EXISTS MotherBoard (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 socket text,
                 GCPUtype text,
@@ -162,7 +174,7 @@ public class DataBase {
     public static void addVideoCard(VideoCard vc){
         var req = String.format("""
                 INSERT INTO VideoCard(GCPU, VolumeMemory, TypeMemory, FrequencyMemory, Power, title, manufacturer) 
-                VALUES ('%s", %s, '%s', %s, %s, '%s', '%s');
+                VALUES ('%s', %s, '%s', %s, %s, '%s', '%s');
                 """, vc.getGCPU(), vc.getVolumeMemory(), vc.getTypeMemory(), vc.getFrequencyMemory(),
                 vc.getPower(), vc.getPower(), vc.getTitle(), vc.getManufacture());
         try {
@@ -189,7 +201,7 @@ public class DataBase {
             while (resultSet.next()){
                 var vc = new VideoCard();
                 vc.setGCPU(resultSet.getString("GCPU"));
-                vc.setFrequencyMemory(resultSet.getFloat("FrequencyMemory"));
+                vc.setFrequencyMemory(resultSet.getInt("FrequencyMemory"));
                 vc.setPower(resultSet.getInt("Power"));
                 vc.setTypeMemory(resultSet.getString("TypeMemory"));
                 vc.setId(resultSet.getInt("id"));

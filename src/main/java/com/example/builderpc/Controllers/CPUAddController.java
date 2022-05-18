@@ -112,6 +112,8 @@ public class CPUAddController implements Initializable {
             return;
         }
         DataBase.addCPU(cpu);
+        txtTitle.setText("");
+        response.setText("Процессор успешно добавлен");
     }
 
     public void btnCloseClick(ActionEvent actionEvent) throws IOException {

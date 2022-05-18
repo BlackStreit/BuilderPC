@@ -4,7 +4,7 @@ public class VideoCard extends Detail {
     private String GCPU;
     private int volumeMemory;
     private String typeMemory;
-    private float FrequencyMemory;
+    private int FrequencyMemory;
     private int power;
 
     @Override
@@ -23,11 +23,11 @@ public class VideoCard extends Detail {
         this.GCPU = "GCPU";
         this.volumeMemory = 0;
         this.typeMemory = "typeMemory";
-        FrequencyMemory = 0.0f;
+        FrequencyMemory = 0;
         this.power = 0;
     }
 
-    public VideoCard(int id, String title, String manufacture, String GCPU, int volumeMemory, String typeMemory, float frequencyMemory, int power) throws Exception {
+    public VideoCard(int id, String title, String manufacture, String GCPU, int volumeMemory, String typeMemory, int frequencyMemory, int power) throws Exception {
         super(id, title, manufacture);
         this.GCPU = GCPU;
         this.volumeMemory = volumeMemory;
@@ -60,11 +60,11 @@ public class VideoCard extends Detail {
         this.typeMemory = typeMemory;
     }
 
-    public float getFrequencyMemory() {
+    public int getFrequencyMemory() {
         return FrequencyMemory;
     }
 
-    public void setFrequencyMemory(float frequencyMemory) {
+    public void setFrequencyMemory(int frequencyMemory) {
         FrequencyMemory = frequencyMemory;
     }
 

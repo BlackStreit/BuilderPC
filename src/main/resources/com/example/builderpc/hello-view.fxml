@@ -9,13 +9,13 @@
 
 <AnchorPane prefHeight="728.0" prefWidth="1151.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.builderpc.HelloController">
    <children>
-      <TabPane layoutX="20.0" layoutY="28.0" prefHeight="665.0" prefWidth="855.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutX="20.0" layoutY="28.0" prefHeight="665.0" prefWidth="1111.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Процессоры">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="636.0" prefWidth="1004.0">
                      <children>
-                        <TableView fx:id="tableCPU" editable="true" layoutX="22.0" layoutY="14.0" prefHeight="514.0" prefWidth="819.0">
+                        <TableView fx:id="tableCPU" editable="true" layoutX="22.0" layoutY="14.0" prefHeight="514.0" prefWidth="1083.0">
                           <columns>
                             <TableColumn fx:id="tcCPUnumber" editable="false" prefWidth="75.0" text="Артикул" />
                               <TableColumn fx:id="tcCPUmanufacture" editable="false" prefWidth="75.0" text="Производитель" />
@@ -37,7 +37,26 @@
           </Tab>
           <Tab text="Видеокарты">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnVideoCardAdd" layoutX="24.0" layoutY="543.0" mnemonicParsing="false" onAction="#btnVideoCardAddClick" prefHeight="62.0" prefWidth="84.0" text="Добавить" />
+                        <Button fx:id="btnVideoCardDelete" layoutX="155.0" layoutY="543.0" mnemonicParsing="false" onAction="#btnVideoCardDeleteClick" prefHeight="62.0" prefWidth="84.0" text="Удалить" />
+                        <TableView fx:id="tableVideoCard" layoutX="3.0" layoutY="27.0" prefHeight="506.0" prefWidth="1111.0">
+                          <columns>
+                              <TableColumn fx:id="tcVideoCardId" prefWidth="101.0" text="Артикул" />
+                              <TableColumn fx:id="tcVideoCardManufacture" prefWidth="75.0" text="Производитель" />
+                              <TableColumn fx:id="tcVideoCardTitle" prefWidth="75.0" text="Название" />
+                            <TableColumn fx:id="tcVideoCardGCPU" prefWidth="177.0" text="Графический процессор" />
+                            <TableColumn fx:id="tcVideoCardVolumeMemory" prefWidth="115.0" text="Объем памяти" />
+                              <TableColumn fx:id="tcVideoCardTypeMemory" prefWidth="75.0" text="Тип памяти" />
+                              <TableColumn fx:id="tcVideoCardFrequencyMemory" prefWidth="75.0" text="Частота памяти" />
+                              <TableColumn fx:id="tcVideoCardPower" prefWidth="75.0" text="Мощность" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Блоки питания">
