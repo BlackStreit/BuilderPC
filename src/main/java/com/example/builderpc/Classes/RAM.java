@@ -2,10 +2,10 @@ package com.example.builderpc.Classes;
 
 public class RAM extends Detail{
     private String typeMemory;
-    private float frequency;
+    private int frequency;
     private int volume;
 
-    public RAM(int id, String title, String manufacture, String typeMemory, float frequency, int volume) throws Exception {
+    public RAM(int id, String title, String manufacture, String typeMemory, int frequency, int volume) throws Exception {
         super(id, title, manufacture);
         this.typeMemory = typeMemory;
         this.frequency = frequency;
@@ -15,7 +15,7 @@ public class RAM extends Detail{
     public RAM() {
         super();
         this.typeMemory = "typeMemory";
-        this.frequency = 0.0f;
+        this.frequency = 0;
         this.volume = 0;
     }
 
@@ -27,11 +27,11 @@ public class RAM extends Detail{
         this.typeMemory = typeMemory;
     }
 
-    public float getFrequency() {
+    public int getFrequency() {
         return frequency;
     }
 
-    public void setFrequency(float frequency) {
+    public void setFrequency(int frequency) {
         this.frequency = frequency;
     }
 

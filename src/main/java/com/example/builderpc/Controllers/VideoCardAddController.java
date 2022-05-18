@@ -134,7 +134,7 @@ public class VideoCardAddController implements Initializable {
         try {
             vc.setTitle(txtTitle.getText());
         } catch (Exception e) {
-            Errors.setText("Вы не ввели имя");
+            Errors.setText("Вы не ввели название");
             return;
         }
         DataBase.addVideoCard(vc);

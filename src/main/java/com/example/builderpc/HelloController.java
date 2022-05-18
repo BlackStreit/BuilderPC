@@ -1,6 +1,7 @@
 package com.example.builderpc;
 
 import com.example.builderpc.Classes.CPU;
+import com.example.builderpc.Classes.PowerBlock;
 import com.example.builderpc.Classes.VideoCard;
 import com.example.builderpc.DataBase.DataBase;
 import javafx.beans.value.ChangeListener;
@@ -33,6 +34,7 @@ public class HelloController implements Initializable {
     public Button btnCPDelete;
     public Button btnVideoCardAdd;
     public Button btnVideoCardDelete;
+
     public TableView<VideoCard> tableVideoCard;
     public TableColumn<VideoCard, Integer> tcVideoCardId;
     public TableColumn<VideoCard, String> tcVideoCardGCPU;
@@ -42,6 +44,14 @@ public class HelloController implements Initializable {
     public TableColumn<VideoCard, Integer> tcVideoCardPower;
     public TableColumn<VideoCard, String> tcVideoCardTitle;
     public TableColumn<VideoCard, String> tcVideoCardManufacture;
+
+    public TableView<PowerBlock> tablePowerBlock;
+    public TableColumn<PowerBlock, Integer> tcPowerBlockId;
+    public TableColumn<PowerBlock, String> tcPowerBlockManufacturer;
+    public TableColumn<PowerBlock, String> tcPowerBlockTitle;
+    public TableColumn<PowerBlock, Integer> tcPowerBlockPower;
+    public Button btnPowerBlockAdd;
+    public Button btnPowerBlockDelete;
 
 
     private CPU cpuDel = null;
@@ -53,6 +63,7 @@ public class HelloController implements Initializable {
     void initTable(){
         initCPUTable();
         initVideoCardTable();
+        initPowerBlockTable();
     }
     void initCPUTable(){
         //Создание таблицы процессора
@@ -96,6 +107,25 @@ public class HelloController implements Initializable {
         });
     }
 
+    PowerBlock powerBlockDel = null;
+
+    void initPowerBlockTable(){
+        tcPowerBlockId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcPowerBlockPower.setCellValueFactory(new PropertyValueFactory<>("power"));
+        tcPowerBlockTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcPowerBlockManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacture"));
+        tablePowerBlock.setItems(DataBase.getPowerBlock());
+        TableView.TableViewSelectionModel<PowerBlock> selectionModelPowerBlock = tablePowerBlock.getSelectionModel();
+        selectionModelPowerBlock.selectedItemProperty().addListener(new ChangeListener<PowerBlock>() {
+            @Override
+            public void changed(ObservableValue<? extends PowerBlock> observableValue, PowerBlock powerBlock, PowerBlock t1) {
+                if(t1 != null){
+                    powerBlockDel = t1;
+                }
+            }
+        });
+    }
+
     public void btnCPUaddClick(ActionEvent actionEvent) throws IOException {
         Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
         DataBase.createDataBase();
@@ -132,6 +162,25 @@ public class HelloController implements Initializable {
             DataBase.deleteVideoCard(vcDel.getId());
             initVideoCardTable();
             vcDel = null;
+        }
+    }
+
+    public void btnPowerBlockAddClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
+        DataBase.createDataBase();
+        DataBase.createTable();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("PowerBlockAdd.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        totalStage.setTitle("Добавить блок питания");
+        totalStage.setScene(scene);
+        totalStage.show();
+    }
+
+    public void btnPowerBlockDeleteClick(ActionEvent actionEvent) {
+        if(powerBlockDel!=null){
+            DataBase.deletePowerBlock(powerBlockDel.getId());
+            powerBlockDel = null;
+            initPowerBlockTable();
         }
     }
 }

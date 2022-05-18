@@ -61,7 +61,22 @@
           </Tab>
             <Tab text="Блоки питания">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tablePowerBlock" layoutX="35.0" layoutY="34.0" prefHeight="493.0" prefWidth="1070.0">
+                          <columns>
+                            <TableColumn fx:id="tcPowerBlockId" prefWidth="75.0" text="Артикул" />
+                            <TableColumn fx:id="tcPowerBlockManufacturer" prefWidth="75.0" text="Производитель" />
+                              <TableColumn fx:id="tcPowerBlockTitle" prefWidth="75.0" text="Название" />
+                              <TableColumn fx:id="tcPowerBlockPower" prefWidth="75.0" text="Мощность" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Button fx:id="btnPowerBlockAdd" layoutX="51.0" layoutY="549.0" mnemonicParsing="false" onAction="#btnPowerBlockAddClick" prefHeight="55.0" prefWidth="86.0" text="Добавить" />
+                        <Button fx:id="btnPowerBlockDelete" layoutX="153.0" layoutY="549.0" mnemonicParsing="false" onAction="#btnPowerBlockDeleteClick" prefHeight="55.0" prefWidth="87.0" text="Удалить" textAlignment="CENTER" wrapText="true" />
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Постоянная память">

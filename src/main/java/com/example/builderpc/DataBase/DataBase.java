@@ -12,7 +12,7 @@ public class DataBase {
 
     public static void deleteTable(){
         String sql = """
-               DROP TABLE VideoCard;
+               DROP TABLE RAM;
                 """;
         try {
             statement.executeUpdate(sql);
@@ -99,7 +99,7 @@ public class DataBase {
                 CREATE TABLE IF NOT EXISTS RAM (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 typeMemory text,
-                frequency float,
+                frequency integer,
                 volume integer,
                 title text,
                 manufacturer text);
@@ -335,7 +335,7 @@ public class DataBase {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()){
                 RAM ram = new RAM();
-                ram.setFrequency(resultSet.getFloat("frequency"));
+                ram.setFrequency(resultSet.getInt("frequency"));
                 ram.setVolume(resultSet.getInt("volume"));
                 ram.setId(resultSet.getInt("id"));
                 ram.setTypeMemory(resultSet.getString("typeMemory"));
