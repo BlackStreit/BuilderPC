@@ -2,6 +2,7 @@ package com.example.builderpc;
 
 import com.example.builderpc.Classes.CPU;
 import com.example.builderpc.Classes.PowerBlock;
+import com.example.builderpc.Classes.Storage;
 import com.example.builderpc.Classes.VideoCard;
 import com.example.builderpc.DataBase.DataBase;
 import javafx.beans.value.ChangeListener;
@@ -53,6 +54,17 @@ public class HelloController implements Initializable {
     public Button btnPowerBlockAdd;
     public Button btnPowerBlockDelete;
 
+    public TableView<Storage> tableStorage;
+    public TableColumn<Storage, Integer> tcStorageId;
+    public TableColumn<Storage, String> tcStorageManufacturer;
+    public TableColumn<Storage, String> tcStorageTitle;
+    public TableColumn<Storage, Integer> tcStorageVolume;
+    public TableColumn<Storage, String> tcStorageType;
+    public TableColumn<Storage, Integer> tcStorageSteedOfWrite;
+    public TableColumn<Storage, Integer> tcStorageSpeedOfRead;
+    public Button btnStorageAdd;
+    public Button btnStorageDelete;
+
 
     private CPU cpuDel = null;
 
@@ -64,6 +76,7 @@ public class HelloController implements Initializable {
         initCPUTable();
         initVideoCardTable();
         initPowerBlockTable();
+        initStorageTable();
     }
     void initCPUTable(){
         //Создание таблицы процессора
@@ -125,6 +138,26 @@ public class HelloController implements Initializable {
             }
         });
     }
+    Storage storageDelete = null;
+    void initStorageTable(){
+        tcStorageId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcStorageManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacture"));
+        tcStorageTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcStorageType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        tcStorageVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
+        tcStorageSpeedOfRead.setCellValueFactory(new PropertyValueFactory<>("speedOfRead"));
+        tcStorageSteedOfWrite.setCellValueFactory(new PropertyValueFactory<>("speedOfWrite"));
+        tableStorage.setItems(DataBase.getStorage());
+        TableView.TableViewSelectionModel<Storage> selectionModelStorage = tableStorage.getSelectionModel();
+        selectionModelStorage.selectedItemProperty().addListener(new ChangeListener<Storage>() {
+            @Override
+            public void changed(ObservableValue<? extends Storage> observableValue, Storage storage, Storage t1) {
+                if(t1 != null){
+                    storageDelete = t1;
+                }
+            }
+        });
+    }
 
     public void btnCPUaddClick(ActionEvent actionEvent) throws IOException {
         Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
@@ -181,6 +214,25 @@ public class HelloController implements Initializable {
             DataBase.deletePowerBlock(powerBlockDel.getId());
             powerBlockDel = null;
             initPowerBlockTable();
+        }
+    }
+
+    public void btnStorageAddClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
+        DataBase.createDataBase();
+        DataBase.createTable();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StorageAdd.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        totalStage.setTitle("Добавить постоянную память");
+        totalStage.setScene(scene);
+        totalStage.show();
+    }
+
+    public void btnStorageDeleteClick(ActionEvent actionEvent) {
+        if(storageDelete!=null){
+            DataBase.deleteStorage(storageDelete.getId());
+            storageDelete = null;
+            initStorageTable();
         }
     }
 }
