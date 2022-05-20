@@ -95,6 +95,7 @@ public class HelloController implements Initializable {
         initPowerBlockTable();
         initStorageTable();
         initRAMTable();
+        initMotherboardTable();
     }
     void initCPUTable(){
         //Создание таблицы процессора
@@ -314,7 +315,15 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void btnMotherboardAddClick(ActionEvent actionEvent) {
+    public void btnMotherboardAddClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
+        DataBase.createDataBase();
+        DataBase.createTable();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MotherboardAdd.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        totalStage.setTitle("Добавить материнскую плату");
+        totalStage.setScene(scene);
+        totalStage.show();
     }
 
     public void btnMotherboardDeleteClick(ActionEvent actionEvent) {

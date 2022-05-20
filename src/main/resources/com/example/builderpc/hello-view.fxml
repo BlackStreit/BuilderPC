@@ -142,7 +142,7 @@
                            </columnResizePolicy>
                         </TableView>
                         <Button fx:id="btnMotherboardAdd" layoutX="35.0" layoutY="557.0" mnemonicParsing="false" onAction="#btnMotherboardAddClick" prefHeight="51.0" prefWidth="88.0" text="Добавить" />
-                        <Button fx:id="btnMotherboardDelete" layoutX="146.0" layoutY="557.0" mnemonicParsing="false" onAction="#btnMotherboardDeleteClick" prefHeight="51.0" prefWidth="88.0" text="Добавить" />
+                        <Button fx:id="btnMotherboardDelete" layoutX="146.0" layoutY="557.0" mnemonicParsing="false" onAction="#btnMotherboardDeleteClick" prefHeight="51.0" prefWidth="88.0" text="Удалить" />
                      </children></AnchorPane>
               </content>
             </Tab>

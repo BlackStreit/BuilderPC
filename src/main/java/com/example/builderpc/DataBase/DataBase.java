@@ -353,7 +353,7 @@ public class DataBase {
 
     public static void addMotherboard(Motherboard motherboard){
         var req = String.format("""
-                INSERT INTO MotherBoard (socket, GCPUtype, RAMtype, title, manufacture)
+                INSERT INTO MotherBoard (socket, GCPUtype, RAMtype, title, manufacturer)
                 VALUES ('%s', '%s', '%s', '%s', '%s')
                 """, motherboard.getSocket(), motherboard.getGCPUtype(), motherboard.getRAMtype(),
                 motherboard.getTitle(), motherboard.getManufacture());
@@ -365,7 +365,7 @@ public class DataBase {
     }
     public static void deleteMotherboard(int id){
         var req = String.format("""
-                DELECT FROM MotherBoard WHERE id = %s
+                DELETE FROM MotherBoard WHERE id = %s
                 """, id);
         try {
             statement.executeUpdate(req);
