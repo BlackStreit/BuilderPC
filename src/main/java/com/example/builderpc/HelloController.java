@@ -1,9 +1,6 @@
 package com.example.builderpc;
 
-import com.example.builderpc.Classes.CPU;
-import com.example.builderpc.Classes.PowerBlock;
-import com.example.builderpc.Classes.Storage;
-import com.example.builderpc.Classes.VideoCard;
+import com.example.builderpc.Classes.*;
 import com.example.builderpc.DataBase.DataBase;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -65,6 +62,26 @@ public class HelloController implements Initializable {
     public Button btnStorageAdd;
     public Button btnStorageDelete;
 
+    public TableView<RAM> tableRAM;
+    public TableColumn<RAM, Integer> tcRAMId;
+    public TableColumn<RAM, String> tcRAMManufacturer;
+    public TableColumn<RAM, String> tcRAMTitle;
+    public TableColumn<RAM, String> tcRAMTypeMemory;
+    public TableColumn<RAM, Integer> tcRAMFrequency;
+    public TableColumn<RAM, Integer> tcRAMVolume;
+    public Button btnRAMAdd;
+    public Button btnRAMDelete;
+
+    public TableView<Motherboard> tableMotherboard;
+    public TableColumn<Motherboard, Integer> tcMotherboardId;
+    public TableColumn<Motherboard, String> tcMotherboardManufacturer;
+    public TableColumn<Motherboard, String> tcMotherboardTitle;
+    public TableColumn<Motherboard, String> tcMotherboardSocket;
+    public TableColumn<Motherboard, String> tcMotherboardGCPUType;
+    public TableColumn<Motherboard, String> tcMotherboardRAMType;
+    public Button btnMotherboardAdd;
+    public Button btnMotherboardDelete;
+
 
     private CPU cpuDel = null;
 
@@ -77,6 +94,7 @@ public class HelloController implements Initializable {
         initVideoCardTable();
         initPowerBlockTable();
         initStorageTable();
+        initRAMTable();
     }
     void initCPUTable(){
         //Создание таблицы процессора
@@ -159,6 +177,47 @@ public class HelloController implements Initializable {
         });
     }
 
+    private RAM RAMDel = null;
+    void initRAMTable(){
+        tcRAMFrequency.setCellValueFactory(new PropertyValueFactory<>("frequency"));
+        tcRAMId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcRAMManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacture"));
+        tcRAMTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcRAMVolume.setCellValueFactory(new PropertyValueFactory<>("volume"));
+        tcRAMTypeMemory.setCellValueFactory(new PropertyValueFactory<>("typeMemory"));
+        tableRAM.setItems(DataBase.getRAM());
+        TableView.TableViewSelectionModel<RAM> selectionModelRAM = tableRAM.getSelectionModel();
+        selectionModelRAM.selectedItemProperty().addListener(new ChangeListener<RAM>() {
+            @Override
+            public void changed(ObservableValue<? extends RAM> observableValue, RAM ram, RAM t1) {
+                if(t1 != null){
+                    RAMDel = t1;
+                }
+            }
+        });
+    }
+
+    Motherboard motherboardDelete = null;
+
+    void initMotherboardTable(){
+        tcMotherboardId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcMotherboardTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tcMotherboardManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacture"));
+        tcMotherboardGCPUType.setCellValueFactory(new PropertyValueFactory<>("GCPUtype"));
+        tcMotherboardSocket.setCellValueFactory(new PropertyValueFactory<>("socket"));
+        tcMotherboardRAMType.setCellValueFactory(new PropertyValueFactory<>("RAMtype"));
+        tableMotherboard.setItems(DataBase.getMotherboard());
+        TableView.TableViewSelectionModel<Motherboard> selectionModelMotherboard = tableMotherboard.getSelectionModel();
+        selectionModelMotherboard.selectedItemProperty().addListener(new ChangeListener<Motherboard>() {
+            @Override
+            public void changed(ObservableValue<? extends Motherboard> observableValue, Motherboard motherboard, Motherboard t1) {
+                if(t1 != null){
+                    motherboardDelete = t1;
+                }
+            }
+        });
+    }
+
     public void btnCPUaddClick(ActionEvent actionEvent) throws IOException {
         Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
         DataBase.createDataBase();
@@ -233,6 +292,36 @@ public class HelloController implements Initializable {
             DataBase.deleteStorage(storageDelete.getId());
             storageDelete = null;
             initStorageTable();
+        }
+    }
+
+    public void btnRAMAddClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
+        DataBase.createDataBase();
+        DataBase.createTable();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RAMAdd.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        totalStage.setTitle("Добавить оперативную память");
+        totalStage.setScene(scene);
+        totalStage.show();
+    }
+
+    public void btnRAMDeleteClick(ActionEvent actionEvent) {
+        if(RAMDel!=null){
+            DataBase.deleteRAM(RAMDel.getId());
+            RAMDel = null;
+            initRAMTable();
+        }
+    }
+
+    public void btnMotherboardAddClick(ActionEvent actionEvent) {
+    }
+
+    public void btnMotherboardDeleteClick(ActionEvent actionEvent) {
+        if(motherboardDelete!=null){
+            DataBase.deleteMotherboard(motherboardDelete.getId());
+            motherboardDelete = null;
+            initMotherboardTable();
         }
     }
 }

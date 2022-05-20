@@ -104,12 +104,46 @@
             </Tab>
             <Tab text="Оперативная память">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableRAM" layoutX="23.0" layoutY="14.0" prefHeight="536.0" prefWidth="1081.0">
+                          <columns>
+                            <TableColumn fx:id="tcRAMId" prefWidth="75.0" text="Артикул" />
+                              <TableColumn fx:id="tcRAMManufacturer" prefWidth="75.0" text="Производитель" />
+                              <TableColumn fx:id="tcRAMTitle" prefWidth="75.0" text="Название" />
+                              <TableColumn fx:id="tcRAMTypeMemory" prefWidth="75.0" text="Тип памяти" />
+                              <TableColumn fx:id="tcRAMFrequency" prefWidth="75.0" text="Частота" />
+                              <TableColumn fx:id="tcRAMVolume" prefWidth="75.0" text="Объем" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Button fx:id="btnRAMAdd" layoutX="23.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnRAMAddClick" prefHeight="44.0" prefWidth="74.0" text="Добавить" />
+                        <Button fx:id="btnRAMDelete" layoutX="119.0" layoutY="566.0" mnemonicParsing="false" onAction="#btnRAMDeleteClick" prefHeight="44.0" prefWidth="74.0" text="Удалить" />
+                     </children></AnchorPane>
               </content>
             </Tab>
             <Tab text="Материнские платы">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="tableMotherboard" prefHeight="548.0" prefWidth="1070.0">
+                           <columns>
+                              <TableColumn fx:id="tcMotherboardId" prefWidth="75.0" text="Артикул" />
+                              <TableColumn fx:id="tcMotherboardManufacturer" prefWidth="75.0" text="Производитель" />
+                              <TableColumn fx:id="tcMotherboardTitle" prefWidth="75.0" text="Название" />
+                              <TableColumn fx:id="tcMotherboardSocket" prefWidth="75.0" text="Сокет" />
+                              <TableColumn fx:id="tcMotherboardGCPUType" prefWidth="75.0" text="Поддерживаемые видеокарты" />
+                              <TableColumn fx:id="tcMotherboardRAMType" prefWidth="75.0" text="Поддерживаемая оперативная память" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <Button fx:id="btnMotherboardAdd" layoutX="35.0" layoutY="557.0" mnemonicParsing="false" onAction="#btnMotherboardAddClick" prefHeight="51.0" prefWidth="88.0" text="Добавить" />
+                        <Button fx:id="btnMotherboardDelete" layoutX="146.0" layoutY="557.0" mnemonicParsing="false" onAction="#btnMotherboardDeleteClick" prefHeight="51.0" prefWidth="88.0" text="Добавить" />
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
