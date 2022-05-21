@@ -12,7 +12,7 @@ public class DataBase {
 
     public static void deleteTable(){
         String sql = """
-               DROP TABLE RAM;
+               DROP TABLE PC;
                 """;
         try {
             statement.executeUpdate(sql);
@@ -35,7 +35,7 @@ public class DataBase {
         }
     }
     public static void createTable(){
-        //deleteTable();
+        deleteTable();
         String sql = """
                 CREATE TABLE IF NOT EXISTS CPU
                 ( id integer PRIMARY KEY AUTOINCREMENT,
@@ -125,16 +125,14 @@ public class DataBase {
             e.printStackTrace();
         }
         sql = """
-                CREATE TABLE PC (
+                CREATE TABLE IF NOT EXISTS PC (
                 id integer PRIMARY KEY AUTOINCREMENT,
                 cpuID integer,
                 vcId integer,
                 pbID integer,
                 storageId integer,
                 ramId integer,
-                mbId integer,
-                title text,
-                manufacturer text);
+                mbId integer);
                 """;
         try {
             statement.executeUpdate(sql);
@@ -548,11 +546,10 @@ public class DataBase {
 
     public static void addComputer(Computer computer){
         var req = String.format("""
-                INSERT INTO PC(cpuID, vcId, pbID, storageId, ramId, mbId, title, manufacturer)
+                INSERT INTO PC(cpuID, vcId, pbID, storageId, ramId, mbId)
                 VALUES (%s, %s, %s, %s, %s, %s, '%s', '%s')
                 """, computer.getCpu().getId(), computer.getVideoCard().getId(), computer.getPowerBlock().getId(),
-                computer.getStorage().getId(), computer.getRam().getId(), computer.getMotherboard().getId(), computer.getTitle(),
-                computer.getManufacture());
+                computer.getStorage().getId(), computer.getRam().getId(), computer.getMotherboard().getId());
         try {
             statement.executeUpdate(req);
         } catch (SQLException e) {
@@ -576,8 +573,6 @@ public class DataBase {
             while (resultSet.next()){
                 var pc = new Computer();
                 pc.setId(resultSet.getInt("id"));
-                pc.setTitle(resultSet.getString("title"));
-                pc.setManufacture(resultSet.getString("manufacturer"));
                 pc.setCpu(foundCPU(resultSet.getInt("cpuID")));
                 pc.setMotherboard(foundMotherboard(resultSet.getInt("mbId")));
                 pc.setRam(foundRAM(resultSet.getInt("ramId")));

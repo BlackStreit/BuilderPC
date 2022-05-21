@@ -1,14 +1,14 @@
-package com.example.builderpc;
+package com.example.builderpc.Controllers;
 
 import com.example.builderpc.Classes.*;
 import com.example.builderpc.DataBase.DataBase;
+import com.example.builderpc.HelloApplication;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -19,7 +19,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class ComputerMainController implements Initializable {
+    public Button btnClose;
 
     public TableView<CPU> tableCPU;
     public TableColumn<CPU, Integer> tcCPUnumber;
@@ -29,10 +30,6 @@ public class HelloController implements Initializable {
     public TableColumn<CPU, Integer> tcCPUPower;
     public TableColumn<CPU, String> tcCPUsocket;
     public TableColumn<CPU, String> tcCPUarchetype;
-    public Button btnCPUadd;
-    public Button btnCPDelete;
-    public Button btnVideoCardAdd;
-    public Button btnVideoCardDelete;
 
     public TableView<VideoCard> tableVideoCard;
     public TableColumn<VideoCard, Integer> tcVideoCardId;
@@ -49,8 +46,6 @@ public class HelloController implements Initializable {
     public TableColumn<PowerBlock, String> tcPowerBlockManufacturer;
     public TableColumn<PowerBlock, String> tcPowerBlockTitle;
     public TableColumn<PowerBlock, Integer> tcPowerBlockPower;
-    public Button btnPowerBlockAdd;
-    public Button btnPowerBlockDelete;
 
     public TableView<Storage> tableStorage;
     public TableColumn<Storage, Integer> tcStorageId;
@@ -60,8 +55,6 @@ public class HelloController implements Initializable {
     public TableColumn<Storage, String> tcStorageType;
     public TableColumn<Storage, Integer> tcStorageSteedOfWrite;
     public TableColumn<Storage, Integer> tcStorageSpeedOfRead;
-    public Button btnStorageAdd;
-    public Button btnStorageDelete;
 
     public TableView<RAM> tableRAM;
     public TableColumn<RAM, Integer> tcRAMId;
@@ -70,8 +63,6 @@ public class HelloController implements Initializable {
     public TableColumn<RAM, String> tcRAMTypeMemory;
     public TableColumn<RAM, Integer> tcRAMFrequency;
     public TableColumn<RAM, Integer> tcRAMVolume;
-    public Button btnRAMAdd;
-    public Button btnRAMDelete;
 
     public TableView<Motherboard> tableMotherboard;
     public TableColumn<Motherboard, Integer> tcMotherboardId;
@@ -80,17 +71,7 @@ public class HelloController implements Initializable {
     public TableColumn<Motherboard, String> tcMotherboardSocket;
     public TableColumn<Motherboard, String> tcMotherboardGCPUType;
     public TableColumn<Motherboard, String> tcMotherboardRAMType;
-    public Button btnMotherboardAdd;
-    public Button btnMotherboardDelete;
-    public Button btnPCBuilder;
 
-
-    private CPU cpuDel = null;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        initTable();
-    }
     void initTable(){
         initCPUTable();
         initVideoCardTable();
@@ -114,13 +95,11 @@ public class HelloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends CPU> observableValue, CPU cpu, CPU t1) {
                 if(t1!=null){
-                    cpuDel = t1;
+
                 }
             }
         });
     }
-
-    private VideoCard vcDel = null;
 
     void initVideoCardTable(){
         tcVideoCardGCPU.setCellValueFactory(new PropertyValueFactory<>("GCPU"));
@@ -136,12 +115,10 @@ public class HelloController implements Initializable {
         selectionModelVideoCard.selectedItemProperty().addListener(new ChangeListener<VideoCard>() {
             @Override
             public void changed(ObservableValue<? extends VideoCard> observableValue, VideoCard videoCard, VideoCard t1) {
-                vcDel = t1;
+
             }
         });
     }
-
-    PowerBlock powerBlockDel = null;
 
     void initPowerBlockTable(){
         tcPowerBlockId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -154,12 +131,12 @@ public class HelloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends PowerBlock> observableValue, PowerBlock powerBlock, PowerBlock t1) {
                 if(t1 != null){
-                    powerBlockDel = t1;
+
                 }
             }
         });
     }
-    Storage storageDelete = null;
+
     void initStorageTable(){
         tcStorageId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcStorageManufacturer.setCellValueFactory(new PropertyValueFactory<>("manufacture"));
@@ -174,13 +151,12 @@ public class HelloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Storage> observableValue, Storage storage, Storage t1) {
                 if(t1 != null){
-                    storageDelete = t1;
+
                 }
             }
         });
     }
 
-    private RAM RAMDel = null;
     void initRAMTable(){
         tcRAMFrequency.setCellValueFactory(new PropertyValueFactory<>("frequency"));
         tcRAMId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -194,13 +170,12 @@ public class HelloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends RAM> observableValue, RAM ram, RAM t1) {
                 if(t1 != null){
-                    RAMDel = t1;
+
                 }
             }
         });
     }
 
-    Motherboard motherboardDelete = null;
 
     void initMotherboardTable(){
         tcMotherboardId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -215,166 +190,27 @@ public class HelloController implements Initializable {
             @Override
             public void changed(ObservableValue<? extends Motherboard> observableValue, Motherboard motherboard, Motherboard t1) {
                 if(t1 != null){
-                    motherboardDelete = t1;
+
                 }
             }
         });
     }
 
-    public void btnCPUaddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        initTable();
+    }
+
+
+
+    public void btnCloseClick(ActionEvent actionEvent) throws IOException {
+        Stage totalStage = (Stage) btnClose.getScene().getWindow();
         DataBase.createDataBase();
         DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("CPUadd.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить процессор");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnCPUdeleteClick(ActionEvent actionEvent) {
-        if(cpuDel!=null) {;
-            DataBase.deleteCPU(cpuDel.getId());
-            initCPUTable();
-            cpuDel = null;
-        }
-    }
-
-
-    public void btnVideoCardAddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("VideoCardAdd.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить видеокарту");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnVideoCardDeleteClick(ActionEvent actionEvent) {
-        if(vcDel != null){
-            DataBase.deleteVideoCard(vcDel.getId());
-            initVideoCardTable();
-            vcDel = null;
-        }
-    }
-
-    public void btnPowerBlockAddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("PowerBlockAdd.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить блок питания");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnPowerBlockDeleteClick(ActionEvent actionEvent) {
-        if(powerBlockDel!=null){
-            DataBase.deletePowerBlock(powerBlockDel.getId());
-            powerBlockDel = null;
-            initPowerBlockTable();
-        }
-    }
-
-    public void btnStorageAddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("StorageAdd.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить постоянную память");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnStorageDeleteClick(ActionEvent actionEvent) {
-        if(storageDelete!=null){
-            DataBase.deleteStorage(storageDelete.getId());
-            storageDelete = null;
-            initStorageTable();
-        }
-    }
-
-    public void btnRAMAddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("RAMAdd.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить оперативную память");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnRAMDeleteClick(ActionEvent actionEvent) {
-        if(RAMDel!=null){
-            DataBase.deleteRAM(RAMDel.getId());
-            RAMDel = null;
-            initRAMTable();
-        }
-    }
-
-    public void btnMotherboardAddClick(ActionEvent actionEvent) throws IOException {
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("MotherboardAdd.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Добавить материнскую плату");
-        totalStage.setScene(scene);
-        totalStage.show();
-    }
-
-    public void btnMotherboardDeleteClick(ActionEvent actionEvent) {
-        if(motherboardDelete!=null){
-            DataBase.deleteMotherboard(motherboardDelete.getId());
-            motherboardDelete = null;
-            initMotherboardTable();
-        }
-    }
-
-    public void btnPCBuilderClick(ActionEvent actionEvent) throws IOException {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Ошибка");
-        if(DataBase.getCPU().size() == 0){
-            alert.setHeaderText("Нет процессоров");
-            alert.show();
-            return;
-        }
-        if(DataBase.getMotherboard().size() == 0){
-            alert.setHeaderText("Нет материнских плат");
-            alert.show();
-            return;
-        }
-        if (DataBase.getRAM().size() == 0){
-            alert.setHeaderText("Нет оперативной памяти");
-            alert.show();
-            return;
-        }
-        if (DataBase.getStorage().size() == 0){
-            alert.setHeaderText("Нет постоянной памяти");
-            alert.show();
-            return;
-        }
-        if (DataBase.getPowerBlock().size() == 0){
-            alert.setHeaderText("Нет блоков питания");
-            alert.show();
-            return;
-        }
-        if (DataBase.getVideoCard().size() == 0){
-            alert.setHeaderText("Нет видеокарт");
-            alert.show();
-            return;
-        }
-        Stage totalStage = (Stage) btnCPUadd.getScene().getWindow();
-        DataBase.createDataBase();
-        DataBase.createTable();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("ComputerMain.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        totalStage.setTitle("Сборка компьютера");
+        totalStage.setTitle("Главная страница");
         totalStage.setScene(scene);
         totalStage.show();
     }
