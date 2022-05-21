@@ -124,6 +124,23 @@ public class DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        sql = """
+                CREATE TABLE PC (
+                id integer PRIMARY KEY AUTOINCREMENT,
+                cpuID integer,
+                vcId integer,
+                pbID integer,
+                storageId integer,
+                ramId integer,
+                mbId integer,
+                title text,
+                manufacturer text);
+                """;
+        try {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ObservableList<CPU> getCPU(){
@@ -169,6 +186,30 @@ public class DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public static CPU foundCPU(int id){
+        CPU cpu = null;
+        var req = String.format("""
+                SELECT * FROM CPU WHERE id = %s;
+                """, id);
+        try {
+            ResultSet resultSet = statement.executeQuery(req);
+            while (resultSet.next()){
+                cpu = new CPU();
+                cpu.setId(resultSet.getInt("id"));
+                cpu.setTitle(resultSet.getString("title"));
+                cpu.setArchetype(resultSet.getString("archetype"));
+                cpu.setFrequency(resultSet.getFloat("frequency"));
+                cpu.setManufacture(resultSet.getString("manufacturer"));
+                cpu.setPower(resultSet.getInt("power"));
+                cpu.setSocket(resultSet.getString("socket"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cpu;
     }
 
     public static void addVideoCard(VideoCard vc){
@@ -217,6 +258,29 @@ public class DataBase {
         }
         return vcs;
     }
+    public static VideoCard foundVideoCard(int id){
+        VideoCard vc = null;
+        var req = "SELECT * FROM VideoCard WHERE id = " + id;
+        try {
+            ResultSet resultSet = statement.executeQuery(req);
+            while (resultSet.next()){
+                vc = new VideoCard();
+                vc.setGCPU(resultSet.getString("GCPU"));
+                vc.setFrequencyMemory(resultSet.getInt("FrequencyMemory"));
+                vc.setPower(resultSet.getInt("Power"));
+                vc.setTypeMemory(resultSet.getString("TypeMemory"));
+                vc.setId(resultSet.getInt("id"));
+                vc.setTitle(resultSet.getString("title"));
+                vc.setManufacture(resultSet.getString("manufacturer"));
+                vc.setVolumeMemory(resultSet.getInt("VolumeMemory"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vc;
+    }
 
     public static void addPowerBlock(PowerBlock pb){
         var req = String.format("""
@@ -258,6 +322,25 @@ public class DataBase {
             e.printStackTrace();
         }
         return powerBlocks;
+    }
+    public static PowerBlock foundPowerBlock(int id){
+        PowerBlock pb = null;
+        var sql = "SELECT * FROM PowerBlock WHERE id = " + id;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                pb = new PowerBlock();
+                pb.setPower(resultSet.getInt("power"));
+                pb.setManufacture(resultSet.getString("manufacturer"));
+                pb.setTitle(resultSet.getString("title"));
+                pb.setId(resultSet.getInt("id"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return pb;
     }
 
     public static void addStorage(Storage storage){
@@ -306,6 +389,29 @@ public class DataBase {
 
         return storages;
     }
+    public static Storage foundStorage(int id){
+        Storage storage = null;
+        var sql = "SELECT * FROM Storage WHERE id = " + id;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                storage = new Storage();
+                storage.setType(resultSet.getString("type"));
+                storage.setSpeedOfRead(resultSet.getInt("speedOfRead"));
+                storage.setVolume(resultSet.getInt("volume"));
+                storage.setSpeedOfWrite(resultSet.getInt("speedOfWrite"));
+                storage.setId(resultSet.getInt("id"));
+                storage.setTitle(resultSet.getString("title"));
+                storage.setManufacture(resultSet.getString("manufacturer"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return storage;
+    }
 
     public static void addRAM(RAM ram){
         var req = String.format("""
@@ -349,6 +455,27 @@ public class DataBase {
             e.printStackTrace();
         }
         return rams;
+    }
+    public static RAM foundRAM(int id){
+        RAM ram = null;
+        var sql = "SELECT * FROM RAM WHERE id = " + id;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                ram = new RAM();
+                ram.setFrequency(resultSet.getInt("frequency"));
+                ram.setVolume(resultSet.getInt("volume"));
+                ram.setId(resultSet.getInt("id"));
+                ram.setTypeMemory(resultSet.getString("typeMemory"));
+                ram.setManufacture(resultSet.getString("manufacturer"));
+                ram.setTitle(resultSet.getString("title"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ram;
     }
 
     public static void addMotherboard(Motherboard motherboard){
@@ -396,4 +523,75 @@ public class DataBase {
 
         return motherboards;
     }
+    public static Motherboard foundMotherboard(int id){
+        Motherboard mb = null;
+        var sql = "SELECT * FROM MotherBoard WHERE id = "+id;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                mb = new Motherboard();
+                mb.setId(resultSet.getInt("id"));
+                mb.setTitle(resultSet.getString("title"));
+                mb.setSocket(resultSet.getString("socket"));
+                mb.setManufacture(resultSet.getString("manufacturer"));
+                mb.setGCPUtype(resultSet.getString("GCPUtype"));
+                mb.setRAMtype(resultSet.getString("RAMtype"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return mb;
+    }
+
+    public static void addComputer(Computer computer){
+        var req = String.format("""
+                INSERT INTO PC(cpuID, vcId, pbID, storageId, ramId, mbId, title, manufacturer)
+                VALUES (%s, %s, %s, %s, %s, %s, '%s', '%s')
+                """, computer.getCpu().getId(), computer.getVideoCard().getId(), computer.getPowerBlock().getId(),
+                computer.getStorage().getId(), computer.getRam().getId(), computer.getMotherboard().getId(), computer.getTitle(),
+                computer.getManufacture());
+        try {
+            statement.executeUpdate(req);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static void deleteComputer(int id){
+        var req = String.format("""
+                DELETE FROM PC WHERE ID = %s""", id);
+        try {
+            statement.executeUpdate(req);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public static ObservableList<Computer> getComputer(){
+        ObservableList<Computer> computers = FXCollections.observableArrayList();
+        var sql = "SELECT * FROM PC";
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                var pc = new Computer();
+                pc.setId(resultSet.getInt("id"));
+                pc.setTitle(resultSet.getString("title"));
+                pc.setManufacture(resultSet.getString("manufacturer"));
+                pc.setCpu(foundCPU(resultSet.getInt("cpuID")));
+                pc.setMotherboard(foundMotherboard(resultSet.getInt("mbId")));
+                pc.setRam(foundRAM(resultSet.getInt("ramId")));
+                pc.setPowerBlock(foundPowerBlock(resultSet.getInt("pbID")));
+                pc.setStorage(foundStorage(resultSet.getInt("storageId")));
+                pc.setVideoCard(foundVideoCard(resultSet.getInt("vcId")));
+                computers.add(pc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return computers;
+    }
+
 }
