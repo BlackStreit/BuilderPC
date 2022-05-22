@@ -18,6 +18,12 @@ public class VideoCard extends Detail {
                 """, GCPU, volumeMemory, typeMemory, FrequencyMemory, power);
     }
 
+    @Override
+    public String toLineString() {
+        return String.format(super.toLineString()+"Графический процессор: %s  Объем памяти: %s  Тип памяти: %s  Частота памяти: %s  Мощность: %s",
+                GCPU, volumeMemory, typeMemory, FrequencyMemory, power);
+    }
+
     public VideoCard() {
         super();
         this.GCPU = "GCPU";

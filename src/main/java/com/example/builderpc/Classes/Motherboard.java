@@ -28,6 +28,11 @@ public class Motherboard extends Detail{
                 """, socket, GCPUtype, RAMtype);
     }
 
+    @Override
+    public String toLineString() {
+        return String.format(super.toLineString() + "Сокет: %s  Поддерживаемые видеокарты: %s  Поддерживаемая RAM: %s", socket, GCPUtype, RAMtype);
+    }
+
     public String getSocket() {
         return socket;
     }

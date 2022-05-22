@@ -61,4 +61,7 @@ abstract public class Detail {
                 Производитель: %s
                 """,id, title, manufacture);
     }
+    public String toLineString() {
+        return String.format("Название: %s  Производитель: %s  ",title, manufacture);
+    }
 }

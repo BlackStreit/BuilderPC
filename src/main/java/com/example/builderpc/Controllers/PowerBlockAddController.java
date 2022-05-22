@@ -1,5 +1,6 @@
 package com.example.builderpc.Controllers;
 
+import com.example.builderpc.Classes.Motherboard;
 import com.example.builderpc.Classes.PowerBlock;
 import com.example.builderpc.DataBase.DataBase;
 import com.example.builderpc.HelloApplication;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class PowerBlockAddController implements Initializable {
@@ -26,6 +28,7 @@ public class PowerBlockAddController implements Initializable {
     public Label errors;
     public Button btnAdd;
     public Button btnClose;
+    public Button btnGen;
 
     public void btnAddClick(ActionEvent actionEvent) {
         PowerBlock pb = new PowerBlock();
@@ -82,5 +85,35 @@ public class PowerBlockAddController implements Initializable {
         }
         cmbPower.setItems(powers);
         cmbPower.setValue(powers.get(0));
+    }
+
+    public void btnGenClick(ActionEvent actionEvent) throws Exception {
+        char[] charsArray = new char[33];
+        int[] numberArray = new int[10];
+        int j = 0;
+        for (var i = 'а'; i <= 'я'; i++){
+            charsArray[j] = i;
+            j++;
+        }
+        for(var i = 0; i <= 9; i++){
+            numberArray[i] = i;
+        }
+        for(int k = 0; k <10; k++) {
+            String title = "";
+            int count = 2 + new Random().nextInt(8);
+            for (int i = 0; i < count; i++) {
+                if (new Random().nextInt(10) % 2 == 0) {
+                    title += charsArray[new Random().nextInt(charsArray.length)];
+                } else {
+                    title += numberArray[new Random().nextInt(numberArray.length)];
+                }
+            }
+            PowerBlock powerBlock = new PowerBlock();
+            powerBlock.setTitle(title);
+            powerBlock.setManufacture(cmbManufacturer.getItems().get(new Random().nextInt(cmbManufacturer.getItems().size())));
+            powerBlock.setPower(cmbPower.getItems().get(new Random().nextInt(cmbPower.getItems().size())));
+            DataBase.addPowerBlock(powerBlock);
+        }
+        errors.setText("Блоки питания сгенерированы");
     }
 }

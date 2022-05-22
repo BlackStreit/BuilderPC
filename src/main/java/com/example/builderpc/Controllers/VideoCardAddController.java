@@ -1,5 +1,6 @@
 package com.example.builderpc.Controllers;
 
+import com.example.builderpc.Classes.Storage;
 import com.example.builderpc.Classes.VideoCard;
 import com.example.builderpc.DataBase.DataBase;
 import com.example.builderpc.HelloApplication;
@@ -17,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class VideoCardAddController implements Initializable {
@@ -30,6 +32,7 @@ public class VideoCardAddController implements Initializable {
     public Button btnClose;
     public Label Errors;
     public ComboBox<Integer> cmbVolumeMemory = new ComboBox<>();
+    public Button btnGen;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -152,5 +155,53 @@ public class VideoCardAddController implements Initializable {
         totalStage.setTitle("Главная страница");
         totalStage.setScene(scene);
         totalStage.show();
+    }
+
+    public void btnGenClick(ActionEvent actionEvent) throws Exception {
+        char[] charsArray = new char[33];
+        int[] numberArray = new int[10];
+        int j = 0;
+        for (var i = 'а'; i <= 'я'; i++){
+            charsArray[j] = i;
+            j++;
+        }
+        for(var i = 0; i <= 9; i++){
+            numberArray[i] = i;
+        }
+        for(int k = 0; k <10; k++) {
+            String title = "";
+            int count = 2 + new Random().nextInt(8);
+            for (int i = 0; i < count; i++) {
+                if (new Random().nextInt(10) % 2 == 0) {
+                    title += charsArray[new Random().nextInt(charsArray.length)];
+                } else {
+                    title += numberArray[new Random().nextInt(numberArray.length)];
+                }
+            }
+            VideoCard videoCard = new VideoCard();
+            videoCard.setTitle(title);
+            videoCard.setManufacture(cmbManufacturer.getItems().get(new Random().nextInt(cmbManufacturer.getItems().size())));
+            videoCard.setPower(cmbPower.getItems().get(new Random().nextInt(cmbPower.getItems().size())));
+            videoCard.setFrequencyMemory(cmbFrequencyMemory.getItems().get(new Random().nextInt(cmbFrequencyMemory.getItems().size())));
+            videoCard.setTypeMemory(cmbTypeMemory.getItems().get(new Random().nextInt(cmbTypeMemory.getItems().size())));
+            videoCard.setVolumeMemory(cmbVolumeMemory.getItems().get(new Random().nextInt(cmbVolumeMemory.getItems().size())));
+            ObservableList<String> GSPU = FXCollections.observableArrayList();
+            GSPU.add("GeForce series");
+            for(int i = 2; i < 10; i++){
+                GSPU.add(String.format("GeForce %s series", i));
+            }
+            for(int i = 100; i <= 900; i+=100){
+                GSPU.add(String.format("GeForce %s series", i));
+            }
+            GSPU.add("GeForce 10 series");
+            GSPU.add("GeForce 16 series");
+            GSPU.add("GeForce 20 series");
+            for(int i = 100; i <= 800; i+=100){
+                GSPU.add(String.format("Radeon R%s", i));
+            }
+            videoCard.setGCPU(GSPU.get(new Random().nextInt(GSPU.size())));
+            DataBase.addVideoCard(videoCard);
+        }
+        Errors.setText("Видеокарты сгенерированы");
     }
 }

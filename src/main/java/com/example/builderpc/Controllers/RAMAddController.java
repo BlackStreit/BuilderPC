@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class RAMAddController implements Initializable {
@@ -29,6 +30,7 @@ public class RAMAddController implements Initializable {
     public ComboBox<Integer> cmbVolume = new ComboBox<>();
     public ComboBox<Integer> cmbFrequency = new ComboBox<>();
     public ComboBox<String> cmbType = new ComboBox<>();
+    public Button btnGen;
 
     public void btnAddClick(ActionEvent actionEvent) {
         RAM ram = new RAM();
@@ -139,5 +141,37 @@ public class RAMAddController implements Initializable {
         }
         cmbFrequency.setItems(frequency);
         cmbFrequency.setValue(frequency.get(0));
+    }
+
+    public void btnGenClick(ActionEvent actionEvent) throws Exception {
+        char[] charsArray = new char[33];
+        int[] numberArray = new int[10];
+        int j = 0;
+        for (var i = 'а'; i <= 'я'; i++){
+            charsArray[j] = i;
+            j++;
+        }
+        for(var i = 0; i <= 9; i++){
+            numberArray[i] = i;
+        }
+        for(int k = 0; k <10; k++) {
+            String title = "";
+            int count = 2 + new Random().nextInt(8);
+            for (int i = 0; i < count; i++) {
+                if (new Random().nextInt(10) % 2 == 0) {
+                    title += charsArray[new Random().nextInt(charsArray.length)];
+                } else {
+                    title += numberArray[new Random().nextInt(numberArray.length)];
+                }
+            }
+            RAM ram = new RAM();
+            ram.setTitle(title);
+            ram.setManufacture(cmbManufacturer.getItems().get(new Random().nextInt(cmbManufacturer.getItems().size())));
+            ram.setFrequency(cmbFrequency.getItems().get(new Random().nextInt(cmbFrequency.getItems().size())));
+            ram.setVolume(cmbVolume.getItems().get(new Random().nextInt(cmbVolume.getItems().size())));
+            ram.setTypeMemory(cmbType.getItems().get(new Random().nextInt(cmbType.getItems().size())));
+            DataBase.addRAM(ram);
+        }
+        errors.setText("ОЗУ сгенерированы");
     }
 }

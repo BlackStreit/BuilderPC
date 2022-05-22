@@ -83,6 +83,7 @@ public class HelloController implements Initializable {
     public Button btnMotherboardAdd;
     public Button btnMotherboardDelete;
     public Button btnPCBuilder;
+    public Button btnCPUGen;
 
 
     private CPU cpuDel = null;

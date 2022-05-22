@@ -15,7 +15,9 @@ public class CPU extends Detail {
                 Архитектура: %s
                 """, frequency, power, socket, archetype);
     }
-
+    public String toLineString() {
+        return String.format( super.toLineString() + "Частота: %s  Энергопотребление: %s  Сокет: %s  Архитектура: %s", frequency, power, socket, archetype);
+    }
     public CPU(int id, float frequency, int power, String socket, String archetype, String title, String manufacture) throws Exception {
         super(id, title, manufacture);
         this.frequency = frequency;

@@ -35,7 +35,7 @@ public class DataBase {
         }
     }
     public static void createTable(){
-        deleteTable();
+        //deleteTable();
         String sql = """
                 CREATE TABLE IF NOT EXISTS CPU
                 ( id integer PRIMARY KEY AUTOINCREMENT,
@@ -132,7 +132,8 @@ public class DataBase {
                 pbID integer,
                 storageId integer,
                 ramId integer,
-                mbId integer);
+                mbId integer,
+                title text);
                 """;
         try {
             statement.executeUpdate(sql);
@@ -146,6 +147,29 @@ public class DataBase {
         var req = """
                 SELECT * FROM CPU;
                 """;
+        try {
+            ResultSet resultSet = statement.executeQuery(req);
+            while (resultSet.next()){
+                var cpu = new CPU();
+                cpu.setId(resultSet.getInt("id"));
+                cpu.setTitle(resultSet.getString("title"));
+                cpu.setArchetype(resultSet.getString("archetype"));
+                cpu.setFrequency(resultSet.getFloat("frequency"));
+                cpu.setManufacture(resultSet.getString("manufacturer"));
+                cpu.setPower(resultSet.getInt("power"));
+                cpu.setSocket(resultSet.getString("socket"));
+                cpus.add(cpu);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cpus;
+    }
+    public static ObservableList<CPU> getCPU(String sql){
+        ObservableList<CPU> cpus = FXCollections.observableArrayList();
+        var req = "SELECT * FROM CPU " + sql;
         try {
             ResultSet resultSet = statement.executeQuery(req);
             while (resultSet.next()){
@@ -256,6 +280,30 @@ public class DataBase {
         }
         return vcs;
     }
+    public static ObservableList<VideoCard> getVideoCard(String sql){
+        ObservableList<VideoCard> vcs = FXCollections.observableArrayList();
+        var req = "SELECT * FROM VideoCard " + sql;
+        try {
+            ResultSet resultSet = statement.executeQuery(req);
+            while (resultSet.next()){
+                var vc = new VideoCard();
+                vc.setGCPU(resultSet.getString("GCPU"));
+                vc.setFrequencyMemory(resultSet.getInt("FrequencyMemory"));
+                vc.setPower(resultSet.getInt("Power"));
+                vc.setTypeMemory(resultSet.getString("TypeMemory"));
+                vc.setId(resultSet.getInt("id"));
+                vc.setTitle(resultSet.getString("title"));
+                vc.setManufacture(resultSet.getString("manufacturer"));
+                vc.setVolumeMemory(resultSet.getInt("VolumeMemory"));
+                vcs.add(vc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return vcs;
+    }
     public static VideoCard foundVideoCard(int id){
         VideoCard vc = null;
         var req = "SELECT * FROM VideoCard WHERE id = " + id;
@@ -304,6 +352,26 @@ public class DataBase {
     public static ObservableList<PowerBlock> getPowerBlock(){
         ObservableList<PowerBlock> powerBlocks = FXCollections.observableArrayList();
         var sql = "SELECT * FROM PowerBlock";
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                var pb = new PowerBlock();
+                pb.setPower(resultSet.getInt("power"));
+                pb.setManufacture(resultSet.getString("manufacturer"));
+                pb.setTitle(resultSet.getString("title"));
+                pb.setId(resultSet.getInt("id"));
+                powerBlocks.add(pb);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return powerBlocks;
+    }
+    public static ObservableList<PowerBlock> getPowerBlock(int power){
+        ObservableList<PowerBlock> powerBlocks = FXCollections.observableArrayList();
+        var sql = "SELECT * FROM PowerBlock WHERE power >= " + power;
         try {
             ResultSet resultSet = statement.executeQuery(sql);
             while (resultSet.next()){
@@ -454,6 +522,28 @@ public class DataBase {
         }
         return rams;
     }
+    public static ObservableList<RAM> getRAM(String req){
+        ObservableList<RAM> rams = FXCollections.observableArrayList();
+        var sql = "SELECT * FROM RAM " + req;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                RAM ram = new RAM();
+                ram.setFrequency(resultSet.getInt("frequency"));
+                ram.setVolume(resultSet.getInt("volume"));
+                ram.setId(resultSet.getInt("id"));
+                ram.setTypeMemory(resultSet.getString("typeMemory"));
+                ram.setManufacture(resultSet.getString("manufacturer"));
+                ram.setTitle(resultSet.getString("title"));
+                rams.add(ram);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rams;
+    }
     public static RAM foundRAM(int id){
         RAM ram = null;
         var sql = "SELECT * FROM RAM WHERE id = " + id;
@@ -521,6 +611,29 @@ public class DataBase {
 
         return motherboards;
     }
+    public static ObservableList<Motherboard> getMotherboard(String req){
+        ObservableList<Motherboard> motherboards = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM MotherBoard " + req;
+        try {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                Motherboard mb = new Motherboard();
+                mb.setId(resultSet.getInt("id"));
+                mb.setTitle(resultSet.getString("title"));
+                mb.setSocket(resultSet.getString("socket"));
+                mb.setManufacture(resultSet.getString("manufacturer"));
+                mb.setGCPUtype(resultSet.getString("GCPUtype"));
+                mb.setRAMtype(resultSet.getString("RAMtype"));
+                motherboards.add(mb);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return motherboards;
+    }
     public static Motherboard foundMotherboard(int id){
         Motherboard mb = null;
         var sql = "SELECT * FROM MotherBoard WHERE id = "+id;
@@ -544,12 +657,13 @@ public class DataBase {
         return mb;
     }
 
+
     public static void addComputer(Computer computer){
         var req = String.format("""
-                INSERT INTO PC(cpuID, vcId, pbID, storageId, ramId, mbId)
-                VALUES (%s, %s, %s, %s, %s, %s, '%s', '%s')
+                INSERT INTO PC(cpuID, vcId, pbID, storageId, ramId, mbId, title)
+                VALUES (%s, %s, %s, %s, %s, %s, '%s')
                 """, computer.getCpu().getId(), computer.getVideoCard().getId(), computer.getPowerBlock().getId(),
-                computer.getStorage().getId(), computer.getRam().getId(), computer.getMotherboard().getId());
+                computer.getStorage().getId(), computer.getRam().getId(), computer.getMotherboard().getId(), computer.getTitle());
         try {
             statement.executeUpdate(req);
         } catch (SQLException e) {
@@ -569,7 +683,7 @@ public class DataBase {
         ObservableList<Computer> computers = FXCollections.observableArrayList();
         var sql = "SELECT * FROM PC";
         try {
-            ResultSet resultSet = statement.executeQuery(sql);
+            ResultSet resultSet = connection.createStatement().executeQuery(sql);
             while (resultSet.next()){
                 var pc = new Computer();
                 pc.setId(resultSet.getInt("id"));
@@ -579,6 +693,7 @@ public class DataBase {
                 pc.setPowerBlock(foundPowerBlock(resultSet.getInt("pbID")));
                 pc.setStorage(foundStorage(resultSet.getInt("storageId")));
                 pc.setVideoCard(foundVideoCard(resultSet.getInt("vcId")));
+                pc.setTitle(resultSet.getString("title"));
                 computers.add(pc);
             }
         } catch (SQLException e) {

@@ -1,5 +1,6 @@
 package com.example.builderpc.Controllers;
 
+import com.example.builderpc.Classes.CPU;
 import com.example.builderpc.Classes.Motherboard;
 import com.example.builderpc.Classes.PowerBlock;
 import com.example.builderpc.DataBase.DataBase;
@@ -18,6 +19,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class MotherboardAddController implements Initializable {
@@ -29,6 +31,7 @@ public class MotherboardAddController implements Initializable {
     public ComboBox<String> cmbSocket = new ComboBox<>();
     public ComboBox<String> cmbVideoCard = new ComboBox<>();
     public ComboBox<String> cmbRAM = new ComboBox<>();
+    public Button btnGen;
 
     public void btnAddClick(ActionEvent actionEvent) {
         Motherboard motherboard = new Motherboard();
@@ -144,5 +147,37 @@ public class MotherboardAddController implements Initializable {
         }
         cmbRAM.setItems(type);
         cmbRAM.setValue(type.get(0));
+    }
+
+    public void btnGenClick(ActionEvent actionEvent) throws Exception {
+        char[] charsArray = new char[33];
+        int[] numberArray = new int[10];
+        int j = 0;
+        for (var i = 'а'; i <= 'я'; i++){
+            charsArray[j] = i;
+            j++;
+        }
+        for(var i = 0; i <= 9; i++){
+            numberArray[i] = i;
+        }
+        for(int k = 0; k <10; k++) {
+            String title = "";
+            int count = 2 + new Random().nextInt(8);
+            for (int i = 0; i < count; i++) {
+                if (new Random().nextInt(10) % 2 == 0) {
+                    title += charsArray[new Random().nextInt(charsArray.length)];
+                } else {
+                    title += numberArray[new Random().nextInt(numberArray.length)];
+                }
+            }
+            Motherboard motherboard = new Motherboard();
+            motherboard.setTitle(title);
+            motherboard.setManufacture(cmbManufacturer.getItems().get(new Random().nextInt(cmbManufacturer.getItems().size())));
+            motherboard.setGCPUtype(cmbVideoCard.getItems().get(new Random().nextInt(cmbVideoCard.getItems().size())));
+            motherboard.setSocket(cmbSocket.getItems().get(new Random().nextInt(cmbSocket.getItems().size())));
+            motherboard.setRAMtype(cmbRAM.getItems().get(new Random().nextInt(cmbRAM.getItems().size())));
+            DataBase.addMotherboard(motherboard);
+        }
+        errors.setText("Материнские платы сгенерированы");
     }
 }

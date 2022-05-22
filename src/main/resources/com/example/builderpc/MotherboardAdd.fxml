@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="546.0" prefWidth="451.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.builderpc.Controllers.MotherboardAddController">
+<AnchorPane prefHeight="609.0" prefWidth="451.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.builderpc.Controllers.MotherboardAddController">
    <children>
       <ComboBox fx:id="cmbManufacturer" layoutX="151.0" layoutY="67.0" prefWidth="150.0" />
       <ComboBox fx:id="cmbSocket" layoutX="152.0" layoutY="195.0" prefWidth="150.0" />
@@ -22,5 +22,6 @@
       <Text layoutX="166.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Оперативная память" />
       <ComboBox fx:id="cmbVideoCard" layoutX="153.0" layoutY="264.0" prefWidth="150.0" />
       <ComboBox fx:id="cmbRAM" layoutX="152.0" layoutY="333.0" prefWidth="150.0" />
+      <Button fx:id="btnGen" layoutX="-2.0" layoutY="564.0" mnemonicParsing="false" onAction="#btnGenClick" prefHeight="45.0" prefWidth="451.0" text="Сгенерировать 10 материнских плат" textAlignment="CENTER" wrapText="true" />
    </children>
 </AnchorPane>

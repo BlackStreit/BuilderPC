@@ -51,4 +51,8 @@ public class RAM extends Detail{
                 Объем: %s
                 """, typeMemory, frequency, volume);
     }
+    @Override
+    public String toLineString() {
+        return String.format(super.toLineString() + "Тип памяти: %s  Частота памяти: %s  Объем: %s", typeMemory, frequency, volume);
+    }
 }

@@ -4,6 +4,7 @@ import com.example.builderpc.DataBase.DataBase;
 
 public class Computer{
     private int id;
+    private String title;
     private CPU cpu;
     private VideoCard videoCard;
     private RAM ram;
@@ -18,33 +19,44 @@ public class Computer{
     private String pbInfo;
     private String mbInfo;
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) throws Exception {
+        if(title.length() == 0){
+            throw  new Exception("Вы не ввели название");
+        }
+        this.title = title;
+    }
+
     public String getCpuInfo() {
-        cpuInfo = DataBase.foundCPU(this.cpu.getId()).toString();
+        cpuInfo = DataBase.foundCPU(this.cpu.getId()).toLineString();
         return cpuInfo;
     }
 
     public String getVcInfo() {
-        vcInfo = DataBase.foundVideoCard(this.videoCard.getId()).toString();
+        vcInfo = DataBase.foundVideoCard(this.videoCard.getId()).toLineString();
         return vcInfo;
     }
 
     public String getRamInfo() {
-        ramInfo = DataBase.foundRAM(ram.getId()).toString();
+        ramInfo = DataBase.foundRAM(ram.getId()).toLineString();
         return ramInfo;
     }
 
     public String getStorageInfo() {
-        storageInfo = DataBase.foundStorage(storage.getId()).toString();
+        storageInfo = DataBase.foundStorage(storage.getId()).toLineString();
         return storageInfo;
     }
 
     public String getPbInfo() {
-        pbInfo = DataBase.foundPowerBlock(powerBlock.getId()).toString();
+        pbInfo = DataBase.foundPowerBlock(powerBlock.getId()).toLineString();
         return pbInfo;
     }
 
     public String getMbInfo() {
-        mbInfo = DataBase.foundMotherboard(motherboard.getId()).toString();
+        mbInfo = DataBase.foundMotherboard(motherboard.getId()).toLineString();
         return mbInfo;
     }
 
@@ -134,5 +146,10 @@ public class Computer{
 
     public void setMotherboard(Motherboard motherboard) {
         this.motherboard = motherboard;
+    }
+
+    @Override
+    public String toString() {
+        return title;
     }
 }

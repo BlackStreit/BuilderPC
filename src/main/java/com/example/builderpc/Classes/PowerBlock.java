@@ -20,6 +20,11 @@ public class PowerBlock extends Detail{
                 """, power);
     }
 
+    @Override
+    public String toLineString() {
+        return String.format(super.toLineString() + "Мощность: %s", power);
+    }
+
     public int getPower() {
         return power;
     }

@@ -24,6 +24,12 @@ public class Storage extends Detail{
                 """, volume, type, speedOfWrite, speedOfRead);
     }
 
+    @Override
+    public String toLineString() {
+        return String.format(super.toLineString() + "Объем: %s  Тип памяти: %s  Скорость записи: %s  Скорость чтения: %s",
+                volume, type, speedOfWrite, speedOfRead);
+    }
+
     public Storage() {
         super();
         this.volume = 0;
